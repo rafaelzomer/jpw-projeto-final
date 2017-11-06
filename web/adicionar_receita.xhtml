@@ -1,0 +1,39 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" 
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="template/template.xhtml">
+    <ui:define name="title">
+        Adicionar receita
+    </ui:define>
+
+    <ui:define name="body">
+        <h:form>
+            <h:panelGrid columns="1">
+                <h:outputLabel for="nome" value="Nome: "/>
+                <p:inputText id="nome" value="#{receitaControlador.receita.nome}" />
+
+                <h:outputLabel for="modoPreparo" value="Modo preparo: "/>
+                <p:inputTextarea id="modoPreparo" value="#{receitaControlador.receita.modoPreparo}" rows="6" cols="50" />
+                
+                <h:outputLabel for="observacao" value="Observação: "/>
+                <p:inputTextarea id="observacao" value="#{receitaControlador.receita.observacao}" rows="3" cols="33" />
+                
+                
+                <p:outputLabel value="Tipo: " for="tipo" />
+                <p:selectOneMenu id="tipo" value="#{receitaControlador.receita.tipo}">
+                    <f:selectItems value="#{receitaControlador.completaTipos()}" />
+                </p:selectOneMenu>
+                <br/>
+            </h:panelGrid>
+            <h:panelGrid columns="3">
+                <p:link outcome="receitas" value="Voltar"/>
+                &nbsp;
+                <p:commandButton value="Adicionar receita" icon="ui-icon-check" action="#{receitaControlador.salvar()}"/>
+            </h:panelGrid>
+        </h:form>
+    </ui:define>
+</ui:composition>

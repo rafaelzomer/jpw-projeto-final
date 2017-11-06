@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core">
+    <f:view>
+        <html xmlns="http://www.w3.org/1999/xhtml">
+            <h:head>
+                <title><ui:insert name="title">EvME</ui:insert></title>
+                <meta charset="utf-8"/>
+                <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+                <style>
+                    body {
+                        margin: 0 !important;
+                    }
+                </style>
+            </h:head>
+            <h:body>
+                <div id="menu">
+                    <ui:insert name="menu">
+                        <ui:include src="./menu.xhtml" />
+                    </ui:insert>
+                </div>
+                <div id="content" class="container body"
+                     style="padding: 10px 5px;">
+                    <ui:insert name="body">Pagina mal configurada</ui:insert>
+                </div>
+                <div id="footer">
+                    <ui:insert name="pie">
+                        <ui:include src="./footer.xhtml" />
+                    </ui:insert>
+                </div>
+            </h:body>
+        </html>
+    </f:view>
+</ui:composition>
