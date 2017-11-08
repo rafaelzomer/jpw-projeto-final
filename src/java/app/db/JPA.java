@@ -8,13 +8,11 @@ public class JPA {
     
     public static EntityManager getEM() {
         if(emf == null) {
-            emf = Persistence.createEntityManagerFactory("receitas");
+            emf = Persistence.createEntityManagerFactory(
+                    "alacarte");
         }
         
-        try {
-            return emf.createEntityManager();
-        } finally {
-//            emf.close();;
-        }
-    }    
+        return emf.createEntityManager();
+    }
+    
 }

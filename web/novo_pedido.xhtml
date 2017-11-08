@@ -1,0 +1,56 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" 
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                
+                xmlns:p="http://primefaces.org/ui"
+                template="template/template.xhtml">
+    <ui:define name="title">
+        Novo pedido
+    </ui:define>
+
+    <ui:define name="body">
+        <h:form id="mainForm">
+            <div class="ui-g">
+                <div class="ui-g-4">
+                    <p:commandButton value="Adicionar item" icon="ui-icon-add" action="#{novoPedidoController.novoItem()}" update="itens" />
+                    <h:panelGrid columns="3">
+                        <p:link outcome="pedidos" value="Voltar"/>
+                        &nbsp;&nbsp;&nbsp;
+                        <p:commandButton value="Adicionar pedido" icon="ui-icon-check" action="#{novoPedidoController.salvar()}"/>
+                    </h:panelGrid>
+                </div>
+                <div class="ui-g-8">
+                    <h:panelGroup id="itens">
+                        <p:repeat value="#{novoPedidoController.pedido.itens}" var="item">
+                            <div class="ui-g">
+                                <p:panel class="ui-g-12" id="basic" style="margin-bottom:20px; padding-bottom: 10px;">
+                                    <div class="ui-g-6">
+                                        <p:outputLabel for="prato" value="Prato" />
+                                        <br/>
+                                        <p:selectOneMenu id="prato" value="#{item.prato}">
+                                            <f:selectItems value="#{novoPedidoController.getPratos()}" var="t" itemValue="#{t}" itemLabel="#{t.nome}"  />
+                                            <f:converter converterId="pratoConverter"/>
+                                        </p:selectOneMenu>
+                                    </div>
+                                    <div class="ui-g-3">
+                                        <p:outputLabel for="quantidade" value="Quantidade" />
+                                        <p:inputNumber class="full" id="quantidade" value="#{item.quantidade}" /> 
+                                    </div>
+                                    <div class="ui-g-3">
+                                        <p:outputLabel for="acoes" value="" />
+                                        <br/>
+                                        <p:commandButton class="ui-g-12" icon="ui-icon-trash" id="acoes" value="Excluir" action="#{novoPedidoController.excluirItem(item)}" update=":mainForm:itens" />
+                                    </div>
+                                </p:panel>
+                            </div>
+                        </p:repeat>
+                    </h:panelGroup>
+                </div>
+            </div>
+        </h:form>
+    </ui:define>
+</ui:composition>
