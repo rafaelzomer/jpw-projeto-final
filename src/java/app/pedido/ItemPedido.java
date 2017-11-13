@@ -10,7 +10,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 @Entity(name = "items_pedido")
-public class ItemPedido  implements Serializable  {
+public class ItemPedido implements Serializable  {
 
     public ItemPedido() {
     }

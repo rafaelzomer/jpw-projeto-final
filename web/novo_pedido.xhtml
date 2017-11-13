@@ -21,10 +21,10 @@
                             insira itens na janela ao lado ao seu pedido
                         </div>
                         <div class="ui-g-4">
-                            <p:link class="ui-g-12 center" outcome="pedidos" value="Voltar"/>
+                            <p:link class="ui-g-12 center" outcome="index" value="Voltar"/>
                         </div>
                         <div class="ui-g-8">
-                            <p:commandButton class="ui-g-12" value="Finalizar pedido" icon="ui-icon-check" action="#{novoPedidoController.salvar()}" update="errorMessages" immediate="true"/>
+                            <p:commandButton class="ui-g-12 btn-primary" value="Finalizar pedido" icon="fa fa-check" action="#{novoPedidoController.salvar()}" update="errorMessages" immediate="true"/>
                             <h:messages id="errorMessages" style="color:red;margin:8px;" />
                         </div>
                     </p:panel>
@@ -51,13 +51,14 @@
                             </div>
                         </p:panel>
                     </div>
-                    <p:dataTable id="itens" var="item" value="#{novoPedidoController.pedido.itens}">
+                    <p:dataTable id="itens" var="item" value="#{novoPedidoController.pedido.itens}"
+                                 emptyMessage="Nenhum item foi adicionado ainda">
                         <p:column headerText="Prato">
                             <h:outputText value="#{item.prato.nome}" />
                         </p:column>
                         <p:column headerText="#">
                             <div class="ui-g-6">
-                                <p:commandButton immediate="true" class="ui-g-12" icon="ui-icon-trash" value="Excluir" action="#{novoPedidoController.excluirItem(item)}" update=":mainForm:itens" />
+                                <p:commandButton immediate="true" class="ui-g-12" icon="fa fa-trash" value="Excluir" action="#{novoPedidoController.excluirItem(item)}" update=":mainForm:itens" />
                             </div>
                             <div class="ui-g-6">
                                 <p:commandButton immediate="true" class="ui-g-12" icon="fa fa-edit" value="Editar" action="#{novoPedidoController.editarItem(item)}" update=":mainForm:itens" />

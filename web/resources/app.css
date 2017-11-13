@@ -1,3 +1,6 @@
 .full {
     width: 100%;
 }
+.full input {
+    width: 100%;
+}

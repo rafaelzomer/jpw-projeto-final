@@ -2,7 +2,6 @@ package app.pedido;
 
 import app.prato.Prato;
 import app.prato.PratoRepository;
-import java.util.ArrayList;
 import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
@@ -11,7 +10,6 @@ import javax.faces.bean.ViewScoped;
 @ViewScoped
 public class NovoPedidoController {
      
-    private Long codigoItem = 1l;
     private Pedido pedido = new Pedido();
     private Prato prato = new Prato();
     private Integer quantidade = 1;
@@ -25,14 +23,16 @@ public class NovoPedidoController {
         return "pedidos";
     }
     
-    public void adicionarItem() {
-        ItemPedido itemPedido = new ItemPedido(this.codigoItem++);
+    public void adicionarItem() throws Exception {
+        if (prato == null) {
+            throw new Exception("Selecione um prato");
+        }
+        Long proximoIdItemPedido = ItemPedidoRepository.getProximoId();
+        ItemPedido itemPedido = new ItemPedido(proximoIdItemPedido);
         itemPedido.setPrato(this.prato);
         itemPedido.setQuantidade(this.quantidade);
         System.out.println("item = " + itemPedido+ '/'+prato);
         this.pedido.getItens().add(itemPedido);
-//        this.prato = null;
-//        this.quantidade = 1;
     }
     
     public void excluirItem(ItemPedido item) {
