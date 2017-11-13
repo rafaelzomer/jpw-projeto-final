@@ -1,41 +1,29 @@
 package app.pedido;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
-import org.primefaces.model.DashboardColumn;
-import org.primefaces.model.DashboardModel;
-import org.primefaces.model.DefaultDashboardColumn;
-import org.primefaces.model.DefaultDashboardModel;
 
 @ManagedBean
 @ViewScoped
 public class PedidoController implements Serializable {
      
-    private DashboardModel model;
+    private List<Pedido> pedidos;
      
     @PostConstruct
     public void init() {
-        model = new DefaultDashboardModel();
-        DashboardColumn column1 = new DefaultDashboardColumn();
-        DashboardColumn column2 = new DefaultDashboardColumn();
-        DashboardColumn column3 = new DefaultDashboardColumn();
-         
-        column1.addWidget("sports");
-        column1.addWidget("finance");
-//         
-//        column2.addWidget("lifestyle");
-//        column2.addWidget("weather");
-//         
-//        column3.addWidget("politics");
-// 
-        model.addColumn(column1);
-        model.addColumn(column2);
-        model.addColumn(column3);
+        this.pedidos = PedidoRepository.getPedidos();
     }
 
-    public DashboardModel getModel() {
-        return model;
+    public List<Pedido> getPedidos() {
+        return pedidos;
     }
+
+    public void setPedidos(List<Pedido> pedidos) {
+        this.pedidos = pedidos;
+    }
+
+    
 }

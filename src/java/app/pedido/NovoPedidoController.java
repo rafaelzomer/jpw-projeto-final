@@ -13,24 +13,37 @@ public class NovoPedidoController {
      
     private Long codigoItem = 1l;
     private Pedido pedido = new Pedido();
+    private Prato prato = new Prato();
+    private Integer quantidade = 1;
     
     public String salvar() {
         System.out.println("pedido = " + pedido);
+        if (pedido.getCodigo() == null) {
+            pedido.setCodigo(PedidoRepository.getProximoId());
+        }
         PedidoRepository.salvar(pedido);
         return "pedidos";
     }
     
-    public void novoItem() {
-//        List<ItemPedido> itens = pedido.getItens();
-        pedido.getItens().add(new ItemPedido(codigoItem++,pedido));
-//        pedido.setItens(itens);
-        System.out.println("pedido.get = " + pedido.getItens());
+    public void adicionarItem() {
+        ItemPedido itemPedido = new ItemPedido(this.codigoItem++);
+        itemPedido.setPrato(this.prato);
+        itemPedido.setQuantidade(this.quantidade);
+        System.out.println("item = " + itemPedido+ '/'+prato);
+        this.pedido.getItens().add(itemPedido);
+//        this.prato = null;
+//        this.quantidade = 1;
     }
     
     public void excluirItem(ItemPedido item) {
         List<ItemPedido> itens = pedido.getItens();
         itens.remove(item);
         pedido.setItens(itens);
+    }
+    
+    public void editarItem(ItemPedido item) {
+        this.prato = item.getPrato();
+        this.quantidade = item.getQuantidade();
     }
 
     public Pedido getPedido() {
@@ -43,6 +56,23 @@ public class NovoPedidoController {
 
     public List<Prato> getPratos() {
         return PratoRepository.getPratos();
+    }    
+
+    public Integer getQuantidade() {
+        return quantidade;
     }
+
+    public void setQuantidade(Integer quantidade) {
+        this.quantidade = quantidade;
+    }
+
+    public Prato getPrato() {
+        return prato;
+    }
+
+    public void setPrato(Prato prato) {
+        this.prato = prato;
+    }
+    
     
 }

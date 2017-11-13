@@ -1,12 +1,14 @@
 package app.pedido;
 
 import app.db.JPA;
+import java.math.BigDecimal;
 import java.util.List;
 import javax.persistence.*;
 
 public class PedidoRepository {
     
     public static void salvar(Pedido pedido) {
+        System.out.println("pedido = " + pedido);
         EntityManager em = JPA.getEM();
         EntityTransaction t = em.getTransaction();
         t.begin();
@@ -25,6 +27,12 @@ public class PedidoRepository {
     public static Pedido getPedido(Integer codigo) {
         EntityManager em = JPA.getEM();
         return em.find(Pedido.class, codigo);
+    }
+    
+    public static Long getProximoId() {
+        EntityManager em = JPA.getEM();
+        BigDecimal proximoId = em.createQuery("select coalesce(max(p.codigo), 0)+1 from pedidos p", BigDecimal.class).getSingleResult();
+        return proximoId.longValueExact();
     }
     
     public static List<Pedido> getPedidos() {

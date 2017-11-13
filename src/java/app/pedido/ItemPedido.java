@@ -15,8 +15,12 @@ public class ItemPedido  implements Serializable  {
     public ItemPedido() {
     }
 
-    public ItemPedido(Long codigo, Pedido pedido) {
+    public ItemPedido(Long codigo) {
         this.codigo = codigo;
+    }
+    public ItemPedido(Long codigo, Integer quantidade, Pedido pedido) {
+        this.codigo = codigo;
+        this.quantidade = quantidade;
         this.pedido = pedido;
     }
     
@@ -24,11 +28,11 @@ public class ItemPedido  implements Serializable  {
     private Long codigo;
     private Integer quantidade;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_prato")
+    @JoinColumn(name = "ID_PRATO")
     private Prato prato = new Prato();
     
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_receita")
+    @JoinColumn(name = "ID_PEDIDO")
     private Pedido pedido;
 
     public Pedido getPedido() {

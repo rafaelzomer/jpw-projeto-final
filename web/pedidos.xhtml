@@ -12,27 +12,21 @@
 
     <ui:define name="body">
         <div class="ui-g">
-            <div class="ui-g-6">
-                <p:panelGrid columns="2">
-                    <f:facet name="header">
-                        <h:outputText value="Mesa 10" />
-                    </f:facet>
-
-                    <h:outputText value="Name:" />
-                    <h:outputText value="Kobe Bryant" />
-                       
-                    <div>
-                        <h:outputText value="Team:" />
-                        <h:outputText value="Los Angeles Lakers" />
-                    </div>
-
-                    <h:outputText value="Position:" />
-                    <h:outputText value="Shooting Guard" />
-
-                    <h:outputText value="Number:" />
-                    <h:outputText value="24" />
-                </p:panelGrid>    
-            </div>
+            <p:repeat value="#{pedidoController.pedidos}" var="pedido">
+                <div class="ui-g-4">
+                    <p:panelGrid class="ui-g-12"  columns="2">
+                        <f:facet name="header">
+                            <h:outputText value="Mesa #{pedido.codigo}" />
+                        </f:facet>
+                    </p:panelGrid>  
+                    <p:repeat value="#{pedido.itens}" var="item">
+                        <p:panelGrid class="ui-g-12"  columns="2">
+                            <h:outputText value="#{item.quantidade}"/>
+                            <h:outputText value="#{item.prato.nome}" /> 
+                        </p:panelGrid>
+                    </p:repeat>
+                </div>
+            </p:repeat>
         </div>
     </ui:define>
 </ui:composition>

@@ -16,39 +16,54 @@
         <h:form id="mainForm">
             <div class="ui-g">
                 <div class="ui-g-4">
-                    <p:commandButton value="Adicionar item" icon="ui-icon-add" action="#{novoPedidoController.novoItem()}" update="itens" />
-                    <h:panelGrid columns="3">
-                        <p:link outcome="pedidos" value="Voltar"/>
-                        &nbsp;&nbsp;&nbsp;
-                        <p:commandButton value="Adicionar pedido" icon="ui-icon-check" action="#{novoPedidoController.salvar()}"/>
-                    </h:panelGrid>
+                    <p:panel class="ui-g-12" style="margin-bottom:20px; padding-bottom: 10px;">
+                        <div class="ui-g-12">
+                            insira itens na janela ao lado ao seu pedido
+                        </div>
+                        <div class="ui-g-4">
+                            <p:link class="ui-g-12 center" outcome="pedidos" value="Voltar"/>
+                        </div>
+                        <div class="ui-g-8">
+                            <p:commandButton class="ui-g-12" value="Finalizar pedido" icon="ui-icon-check" action="#{novoPedidoController.salvar()}" update="errorMessages" immediate="true"/>
+                            <h:messages id="errorMessages" style="color:red;margin:8px;" />
+                        </div>
+                    </p:panel>
                 </div>
                 <div class="ui-g-8">
-                    <h:panelGroup id="itens">
-                        <p:repeat value="#{novoPedidoController.pedido.itens}" var="item">
-                            <div class="ui-g">
-                                <p:panel class="ui-g-12" id="basic" style="margin-bottom:20px; padding-bottom: 10px;">
-                                    <div class="ui-g-6">
-                                        <p:outputLabel for="prato" value="Prato" />
-                                        <br/>
-                                        <p:selectOneMenu id="prato" value="#{item.prato}">
-                                            <f:selectItems value="#{novoPedidoController.getPratos()}" var="t" itemValue="#{t}" itemLabel="#{t.nome}"  />
-                                            <f:converter converterId="pratoConverter"/>
-                                        </p:selectOneMenu>
-                                    </div>
-                                    <div class="ui-g-3">
-                                        <p:outputLabel for="quantidade" value="Quantidade" />
-                                        <p:inputNumber class="full" id="quantidade" value="#{item.quantidade}" /> 
-                                    </div>
-                                    <div class="ui-g-3">
-                                        <p:outputLabel for="acoes" value="" />
-                                        <br/>
-                                        <p:commandButton class="ui-g-12" icon="ui-icon-trash" id="acoes" value="Excluir" action="#{novoPedidoController.excluirItem(item)}" update=":mainForm:itens" />
-                                    </div>
-                                </p:panel>
+                    <div class="ui-g">
+                        <p:panel id="adicionarItem" class="ui-g-12" style="margin-bottom:20px; padding-bottom: 10px;">
+                            <div class="ui-g-6">
+                                <p:outputLabel for="prato" value="Prato" />
+                                <br/>
+                                <p:selectOneMenu id="prato" value="#{novoPedidoController.prato}">
+                                    <f:selectItem itemLabel="Selecione" itemValue="null" />
+                                    <f:selectItems value="#{novoPedidoController.getPratos()}" var="t" itemValue="#{t}" itemLabel="#{t.nome}" />
+                                </p:selectOneMenu>
                             </div>
-                        </p:repeat>
-                    </h:panelGroup>
+                            <div class="ui-g-3">
+                                <p:outputLabel for="quantidade" value="Quantidade" />
+                                <p:inputNumber class="full" id="quantidade" value="#{novoPedidoController.quantidade}" /> 
+                            </div>
+                            <div class="ui-g-3">
+                                <p:outputLabel for="acoes" value="" />
+                                <br/>
+                                <p:commandButton id="acoes" class="ui-g-12" value="Adicionar item" icon="fa fa-plus" action="#{novoPedidoController.adicionarItem()}" update=":mainForm:itens :mainForm:adicionarItem errorMessages" />
+                            </div>
+                        </p:panel>
+                    </div>
+                    <p:dataTable id="itens" var="item" value="#{novoPedidoController.pedido.itens}">
+                        <p:column headerText="Prato">
+                            <h:outputText value="#{item.prato.nome}" />
+                        </p:column>
+                        <p:column headerText="#">
+                            <div class="ui-g-6">
+                                <p:commandButton immediate="true" class="ui-g-12" icon="ui-icon-trash" value="Excluir" action="#{novoPedidoController.excluirItem(item)}" update=":mainForm:itens" />
+                            </div>
+                            <div class="ui-g-6">
+                                <p:commandButton immediate="true" class="ui-g-12" icon="fa fa-edit" value="Editar" action="#{novoPedidoController.editarItem(item)}" update=":mainForm:itens" />
+                            </div>
+                        </p:column>
+                    </p:dataTable>
                 </div>
             </div>
         </h:form>

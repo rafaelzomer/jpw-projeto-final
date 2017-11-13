@@ -1,6 +1,5 @@
 package app.pedido;
 
-import app.receita.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +13,7 @@ import javax.persistence.OneToMany;
 public class Pedido implements Serializable {
     
     @Id
-    private Integer codigo;
+    private Long codigo;
     
     @OneToMany(fetch = FetchType.LAZY, 
             mappedBy = "pedido", 
@@ -22,11 +21,11 @@ public class Pedido implements Serializable {
             cascade = CascadeType.ALL)
     private List<ItemPedido> itens = new ArrayList<ItemPedido>();
 
-    public Integer getCodigo() {
+    public Long getCodigo() {
         return codigo;
     }
 
-    public void setCodigo(Integer codigo) {
+    public void setCodigo(Long codigo) {
         this.codigo = codigo;
     }
 
@@ -38,7 +37,8 @@ public class Pedido implements Serializable {
         this.itens = itens;
     }
 
-    
-
-    
+    @Override
+    public String toString() {
+        return "Pedido{" + "codigo=" + codigo + ", itens=" + itens + '}';
+    }
 }
