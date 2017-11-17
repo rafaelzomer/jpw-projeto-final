@@ -24,11 +24,16 @@ public class MesaController {
         this.mesas = MesaRepository.getMesas();
     }
     
+    public void nova() {
+        this.mesa = new Mesa();
+    }
+    
     public void salvar() {
         if (mesa.getCodigo() == null) {
             mesa.setCodigo(MesaRepository.getProximoId());
         }
         MesaRepository.salvar(mesa);
+        nova();
         buscar();
     }
     

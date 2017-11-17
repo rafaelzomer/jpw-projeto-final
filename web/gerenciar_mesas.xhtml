@@ -30,7 +30,7 @@
                         <p:link class="ui-g-12 center" outcome="index" value="Voltar"/>
                     </div>
                     <div class="ui-g-8">
-                        <p:commandButton id="botaoSalvar" class="ui-g-12 btn-primary" value="Salvar mesa" icon="fa fa-check" action="#{mesaController.salvar()}" update=":mainForm:mesas errorMessages"/>
+                        <p:commandButton id="botaoSalvar" class="ui-g-12 btn-primary" value="Salvar mesa" icon="fa fa-check" action="#{mesaController.salvar()}" update=":mainForm:mesas :mainForm:nova errorMessages"/>
                         <h:messages id="errorMessages" style="color:red;margin:8px;" />
                     </div>
                 </p:panel>

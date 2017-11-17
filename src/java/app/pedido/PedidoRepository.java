@@ -24,7 +24,11 @@ public class PedidoRepository {
         t.commit();
     }
 
-    public static Pedido getPedido(Integer codigo) {
+    public static Pedido getPedido(String codigo) {
+        return getPedido(Long.valueOf(codigo));
+    }
+    
+    public static Pedido getPedido(Long codigo) {
         EntityManager em = JPA.getEM();
         return em.find(Pedido.class, codigo);
     }

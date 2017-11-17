@@ -13,19 +13,34 @@
     </ui:define>
 
     <ui:define name="body">
+        <f:metadata>
+            <f:viewParam name="id" value="#{novoPedidoController.id}"/>
+        </f:metadata>
         <h:form id="mainForm">
-            <div class="ui-g">
+            <p:remoteCommand name="onload" action="#{novoPedidoController.onLoad()}" update="titulo itens" autoRun="true" />
+            <div class="ui-g-12">
+                <h2 class="ui-g-12">
+                    Gerenciando mesa:
+                    <b>
+                        <p:outputLabel id="titulo" value="#{novoPedidoController.mesa.identificador}" />
+                    </b>
+                </h2>
+            </div>
+            <div class="ui-g-12">
                 <div class="ui-g-4">
                     <p:panel class="ui-g-12" style="margin-bottom:20px; padding-bottom: 10px;">
                         <div class="ui-g-12">
-                            insira itens na janela ao lado ao seu pedido
+                            insira itens ao seu pedido no quadro a direita
                         </div>
                         <div class="ui-g-4">
                             <p:link class="ui-g-12 center" outcome="index" value="Voltar"/>
                         </div>
                         <div class="ui-g-8">
-                            <p:commandButton class="ui-g-12 btn-primary" value="Finalizar pedido" icon="fa fa-check" action="#{novoPedidoController.salvar()}" update="errorMessages" immediate="true"/>
+                            <p:commandButton class="ui-g-12 btn-primary" value="Finalizar pedido" icon="fa fa-check" action="#{novoPedidoController.salvar()}" update="errorMessages"/>
                             <h:messages id="errorMessages" style="color:red;margin:8px;" />
+                        </div>
+                        <div class="ui-g-12">
+                            <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
                         </div>
                     </p:panel>
                 </div>
@@ -51,17 +66,20 @@
                             </div>
                         </p:panel>
                     </div>
-                    <p:dataTable id="itens" var="item" value="#{novoPedidoController.pedido.itens}"
+                    <p:dataTable id="itens" var="item" value="#{novoPedidoController.mesa.pedido.itens}"
                                  emptyMessage="Nenhum item foi adicionado ainda">
                         <p:column headerText="Prato">
                             <h:outputText value="#{item.prato.nome}" />
+                        </p:column>
+                        <p:column headerText="Quantidade">
+                            <h:outputText value="#{item.quantidade}" />
                         </p:column>
                         <p:column headerText="#">
                             <div class="ui-g-6">
                                 <p:commandButton immediate="true" class="ui-g-12" icon="fa fa-trash" value="Excluir" action="#{novoPedidoController.excluirItem(item)}" update=":mainForm:itens" />
                             </div>
                             <div class="ui-g-6">
-                                <p:commandButton immediate="true" class="ui-g-12" icon="fa fa-edit" value="Editar" action="#{novoPedidoController.editarItem(item)}" update=":mainForm:itens" />
+                                <p:commandButton immediate="true" class="ui-g-12" icon="fa fa-edit" value="Editar" action="#{novoPedidoController.editarItem(item)}" update=":mainForm:itens :mainForm:adicionarItem" />
                             </div>
                         </p:column>
                     </p:dataTable>

@@ -1,57 +1,86 @@
 package app.pedido;
 
+import app.mesa.MesaRepository;
+import app.mesa.Mesa;
 import app.prato.Prato;
 import app.prato.PratoRepository;
+import app.utils.DefaultController;
 import java.util.List;
+import java.util.Map;
+import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.RequestScoped;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpServletRequest;
 
 @ManagedBean
 @ViewScoped
-public class NovoPedidoController {
+public class NovoPedidoController extends DefaultController {
      
-    private Pedido pedido = new Pedido();
     private Prato prato = new Prato();
     private Integer quantidade = 1;
-    
-    public String salvar() {
-        System.out.println("pedido = " + pedido);
-        if (pedido.getCodigo() == null) {
-            pedido.setCodigo(PedidoRepository.getProximoId());
+    private String id;    
+    private Mesa mesa;
+       
+    public void onLoad() {
+        this.mesa = MesaRepository.getMesa(id);
+        if (mesa.getPedido() == null) {
+            mesa.setPedido(new Pedido());
         }
-        PedidoRepository.salvar(pedido);
-        return "pedidos";
     }
     
-    public void adicionarItem() throws Exception {
-        if (prato == null) {
-            throw new Exception("Selecione um prato");
+    public String salvar() {
+                      
+        if (mesa.getPedido().getCodigo() == null) {
+            mesa.getPedido().setCodigo(PedidoRepository.getProximoId());
         }
         Long proximoIdItemPedido = ItemPedidoRepository.getProximoId();
-        ItemPedido itemPedido = new ItemPedido(proximoIdItemPedido);
+        for(ItemPedido item  : mesa.getPedido().getItens()) {
+            item.setCodigo(proximoIdItemPedido++);
+        }
+        MesaRepository.salvar(mesa);
+        
+        return "index";
+    }
+    
+    public void adicionarItem() {
+        if (prato == null) {
+            setMessage(FacesMessage.SEVERITY_ERROR, "Erro", "Selecione um prato para continuar");
+            return;
+        }
+        if (quantidade == null || quantidade < 1) {
+            setMessage(FacesMessage.SEVERITY_ERROR, "Erro", "Selecione uma quantidade para continuar");
+            return;
+        }
+        ItemPedido itemPedido = new ItemPedido();
         itemPedido.setPrato(this.prato);
         itemPedido.setQuantidade(this.quantidade);
-        System.out.println("item = " + itemPedido+ '/'+prato);
-        this.pedido.getItens().add(itemPedido);
+        prato = new Prato();
+        this.mesa.getPedido().getItens().add(itemPedido);
     }
     
     public void excluirItem(ItemPedido item) {
-        List<ItemPedido> itens = pedido.getItens();
+        List<ItemPedido> itens = mesa.getPedido().getItens();
         itens.remove(item);
-        pedido.setItens(itens);
+        mesa.getPedido().setItens(itens);
     }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+    
+    
     
     public void editarItem(ItemPedido item) {
         this.prato = item.getPrato();
         this.quantidade = item.getQuantidade();
-    }
-
-    public Pedido getPedido() {
-        return pedido;
-    }
-
-    public void setPedido(Pedido pedido) {
-        this.pedido = pedido;
     }
 
     public List<Prato> getPratos() {
@@ -72,6 +101,14 @@ public class NovoPedidoController {
 
     public void setPrato(Prato prato) {
         this.prato = prato;
+    }   
+
+    public Mesa getMesa() {
+        return mesa;
+    }
+
+    public void setMesa(Mesa mesa) {
+        this.mesa = mesa;
     }
     
     

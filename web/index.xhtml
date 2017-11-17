@@ -2,6 +2,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <ui:composition xmlns="http://www.w3.org/1999/xhtml" 
                 xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
                 xmlns:p="http://primefaces.org/ui"
@@ -11,39 +12,46 @@
     </ui:define>
 
     <ui:define name="body">
-        <div class="ui-g">
-            <p:repeat value="#{gerenciarController.mesas}" var="mesa">
-                <div class="ui-g-4">
-                    <p:panel class="ui-g-12">
-                        <p:dataTable var="item" value="#{mesa.pedido.itens}"
-                                     emptyMessage="Pedido sem itens">
-                            <f:facet name="header">
-                                <h:outputText value="#{mesa.descricao}" />
-                            </f:facet>
-
-                            <p:column headerText="Item">
-                                <h:outputText value="#{item.prato.nome}" /> 
-                            </p:column>
-                            <p:column headerText="Quantidade">
-                                <h:outputText value="#{item.quantidade}"/>
-                            </p:column>
-                        </p:dataTable>
-                        <h:form rendered="#{mesa.pedido != null}">
-                            <div class="ui-g-6">
-                                 <p:commandButton class="ui-g-12" value="Cancelar conta" icon="fa fa-times" action="#{pedidoController.salvar()}"/>
-                            </div>
-                            <div class="ui-g-6">
-                                <p:commandButton class="ui-g-12" value="Fechar conta" icon="fa fa-check" action="#{pedidoController.salvar()}"/>
-                            </div>
-                        </h:form>
-                        <h:form rendered="#{mesa.pedido == null}">
-                            <div class="ui-g-12">
-                                <p:commandButton class="ui-g-12" value="Iniciar mesa" icon="fa fa-check" action="#{pedidoController.salvar()}"/>
-                            </div>
-                        </h:form>
-                    </p:panel>
-                </div>
-            </p:repeat>
+        <div class="ui-g-12">
+            <h:graphicImage name="logo.svg" height="70" />
+            <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
         </div>
+        <h:form id="mainForm">
+            <h:panelGroup id="mesas" class="ui-g-12">
+                <p:repeat value="#{gerenciarController.mesas}" var="mesa">
+                    <div class="ui-g-4">
+                        <p:panel header="#{mesa.descricao}" class="ui-g-12">
+                            <h:form id="mesaComPedido#{mesa.codigo}" rendered="#{mesa.pedido != null}">
+                                <p:dataTable var="item" value="#{mesa.pedido.itens}"
+                                             emptyMessage="Pedido sem itens">
+                                    <p:column headerText="Item">
+                                        <h:outputText value="#{item.prato.nome}" /> 
+                                    </p:column>
+                                    <p:column headerText="Quantidade">
+                                        <h:outputText value="#{item.quantidade}"/>
+                                    </p:column>
+                                </p:dataTable>
+                                <div class="ui-g-12">
+                                    <p:commandButton class="ui-g-12" value="Gerenciar pedido" icon="fa fa-cog" action="#{gerenciarController.editar(mesa)}"/>
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:commandButton class="ui-g-12" value="Cancelar conta" icon="fa fa-times" update=":mainForm:mesas" action="#{gerenciarController.cancelarConta(mesa)}"/>
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:commandButton class="ui-g-12" value="Fechar conta" icon="fa fa-check" update=":mainForm:mesas" action="#{gerenciarController.fecharConta(mesa)}"/>
+                                </div>
+                            </h:form >
+                            <h:form  rendered="#{mesa.pedido == null}">
+                                <div class="ui-g-12">
+                                    <h:commandButton value="Iniciar mesa" class="btn btn-primary" action="#{gerenciarController.iniciarMesa(mesa)}">
+                                        <f:ajax execute="@form" render="@none" />
+                                    </h:commandButton>
+                                </div>
+                            </h:form >
+                        </p:panel>
+                    </div>
+                </p:repeat>
+            </h:panelGroup>
+        </h:form>
     </ui:define>
 </ui:composition>

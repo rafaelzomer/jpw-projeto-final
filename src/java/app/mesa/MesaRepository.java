@@ -35,6 +35,10 @@ public class MesaRepository {
         t.commit();
     }
 
+    public static Mesa getMesa(String codigo) {
+        return getMesa(Long.valueOf(codigo));
+    }
+    
     public static Mesa getMesa(Long codigo) {
         EntityManager em = JPA.getEM();
         return em.find(Mesa.class, codigo);
