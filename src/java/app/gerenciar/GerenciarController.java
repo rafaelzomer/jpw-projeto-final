@@ -41,6 +41,7 @@ public class GerenciarController extends DefaultController implements Serializab
     }
     
     public void cancelarConta(Mesa mesa) {
+        System.out.println("cancelarConta = " + mesa);
         setMessage(FacesMessage.SEVERITY_WARN, "Cancelada!", "Conta cancelada");
         mesa.setPedido(null);
         MesaRepository.salvar(mesa);
