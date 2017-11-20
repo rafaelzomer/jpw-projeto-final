@@ -1,11 +1,22 @@
 package app.pedido;
 
 import app.db.JPA;
+import app.prato.Prato;
 import java.math.BigDecimal;
 import java.util.List;
 import javax.persistence.*;
 
 public class PedidoRepository {
+    
+    public static void salvar(List<Pedido> pedidos) {
+        EntityManager em = JPA.getEM();
+        EntityTransaction t = em.getTransaction();
+        t.begin();
+        for(Pedido pedido : pedidos) {
+            em.merge(pedido);
+        }
+        t.commit();
+    }
     
     public static void salvar(Pedido pedido) {
         System.out.println("pedido = " + pedido);

@@ -24,6 +24,12 @@ public class ItemPedido implements Serializable  {
         this.pedido = pedido;
     }
     
+    public ItemPedido(Long codigo, Integer quantidade, Prato prato) {
+        this.codigo = codigo;
+        this.quantidade = quantidade;
+        this.prato = prato;
+    }
+    
     @Id
     private Long codigo;
     private Integer quantidade;
